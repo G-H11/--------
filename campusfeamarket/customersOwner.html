@@ -1,0 +1,814 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="light">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registration Form</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>Contact - Brand</title>
+    <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:300,400,700&amp;display=swap">
+    <link rel="stylesheet" href="assets/fonts/ionicons.min.css">
+    <link rel="stylesheet" href="assets/css/pikaday.min.css">
+
+    <style>
+        .section {
+            display: none;
+        }
+
+        .active {
+            display: block;
+        }
+
+        nav a {
+            margin: 0 15px;
+            cursor: pointer;
+        }
+
+        #balance-info {  
+            /* 水平居中（适用于文本或内联元素） */  
+            text-align: center;  
+  
+            /* 垂直居中（使用 Flexbox） */  
+            display: flex;  
+            justify-content: center; /* 水平居中 */  
+            align-items: center; /* 垂直居中 */  
+            height: 100px; /* 设置一个高度以便看到垂直居中的效果 */  
+  
+            /* 字体样式 */  
+            font-family: Arial, sans-serif;  
+            font-size: 33px;  
+            color: #333;  
+  
+            /* mt-4 可能是某个框架（如 Bootstrap）的 margin-top 样式，如果需要，可以保留 */  
+            margin-top: 1rem; /* 假设 mt-4 相当于 1rem 的 margin-top */  
+        }
+
+    </style>
+</head>
+
+<body>
+
+    <nav class="navbar navbar-expand-lg fixed-top portfolio-navbar gradient navbar-dark">
+        <div class="container"><a class="navbar-brand logo" href="#">Brand</a><button data-bs-toggle="collapse"
+                class="navbar-toggler" data-bs-target="#navbarNav"><span class="visually-hidden">Toggle
+                    navigation</span><span class="navbar-toggler-icon"></span></button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="home.html">首页</a></li>
+                    <li class="nav-item"><a id="nav-add-car" class="nav-link">添加车辆</a></li>
+                    <li class="nav-item"><a id="nav-view-cars" class="nav-link">查询所有车辆信息</a></li>
+                    <li class="nav-item"><a id="nav-buy-scheme" class="nav-link">购买保险</a></li>
+                    <li class="nav-item"><a id="nav-sumit-accident" class="nav-link">事故提交</a></li>
+                    <li class="nav-item"><a id="nav-check-blance" class="nav-link">余额查询</a></li>
+                    <li class="nav-item"><a id="nav-personal-info" class="nav-link">个人信息</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div id="add-car" class="section">
+        <div class="container">
+            <main class="page contact-page">
+                <section class="portfolio-block contact">
+                    <div class="container">
+                        <div class="heading">
+                            <br><br>
+                            <h1>添加保险</h1>
+                        </div>
+                        <form class="form-signin" data-bs-theme="light" onsubmit="addCar(event)">
+                            <h4>请在此添加车辆信息</h4>
+                            <input type="text" class="form-control" placeholder="车辆牌照" required
+                                v-model="carInfo.carNumber">
+
+                            <input type="text" class="form-control" placeholder="车辆名称" required
+                                v-model="carInfo.carName">
+
+                            <input type="text" class="form-control" placeholder="车辆年数" required
+                                v-model="carInfo.carAge">
+                            <br>
+                            <button class="btn btn-primary btn-block" type="submit">添加车辆</button>
+                        </form>
+                        <!-- <form class="form-signin1" data-bs-theme="light" @submit.prevent="buyScheme">
+
+                            <button class="btn btn-primary btn-block" type="submit1">已有车辆？购买保险</button>
+
+                        </form> -->
+                    </div>
+                </section>
+            </main>
+        </div> <!-- /container -->
+    </div>
+
+    <div id="view-cars" class="section">
+
+        <div class="container">
+            <main class="page contact-page">
+                <section class="portfolio-block contact">
+                    <div class="container">
+                        <main class="page contact-page">
+                            <div class="heading">
+                                <br><br>
+                                <h1>车辆列表</h1>
+                            </div>
+                            <button class="btn btn-primary btn-block" onclick="CarInfo()">获取车辆列表</button>
+                            <!-- 显示保险信息的区域 -->
+                            <div id="car-info" class="mt-4"></div>
+                        </main>
+                    </div> <!-- /container -->
+                </section>
+            </main>
+        </div> <!-- /container -->
+
+    </div>
+
+    <div id="buy-scheme" class="section">
+
+        <div class="container">
+            <main class="page contact-page">
+                <section class="portfolio-block contact">
+                    <div class="container">
+                        <main class="page contact-page">
+                            <div class="heading">
+                                <br><br>
+                                <h2 class="form-signin-heading">您有这些车辆还未投保哦</h2><br>
+                            </div>
+                            <!-- <form class="form-signin" data-bs-theme="light" onsubmit="CarsInfo()">
+                            
+                                
+
+                            </form> -->
+                            <button class="btn btn-primary btn-block" onclick="CarsInfo()">获取车辆信息</button>
+                            <!-- 显示保险信息的区域 -->
+
+                            <div id="cars-info" class="mt-4"></div>
+
+                        </main>
+                    </div> <!-- /container -->
+                </section>
+            </main>
+        </div> <!-- /container -->
+
+    </div>
+
+    <div id="check-blance" class="section">
+
+        <div class="container">
+            <main class="page contact-page">
+                <section class="portfolio-block contact">
+                    <div class="container">
+                        <main class="page contact-page">
+                            
+                            <button class="btn btn-primary btn-block" onclick="getBalance()">查看账户余额</button>
+                            <!-- 显示保险信息的区域 -->
+
+                            <div id="balance-info" class="mt-4"></div>
+
+                        </main>
+                    </div> <!-- /container -->
+                </section>
+            </main>
+        </div> <!-- /container -->
+
+    </div>
+
+    <div id="sumit-accident" class="section">
+
+        <div class="container">
+            <main class="page contact-page">
+                <section class="portfolio-block contact">
+                    <div class="container">
+                        <main class="page contact-page">
+                            <div class="heading">
+                                <br><br>
+                                <h1>事故车辆列表</h1>
+                            </div>
+                            <button class="btn btn-primary btn-block" onclick="getInsuranceAboutCars()">获取车辆信息</button>
+                            <!-- 显示保险信息的区域 -->
+                            <div id="accidentCar-info" class="mt-4"></div>
+                        </main>
+                    </div> <!-- /container -->
+                </section>
+            </main>
+        </div> <!-- /container -->
+
+    </div>
+
+    <script>
+        document.getElementById('nav-add-car').addEventListener('click', function () {
+            showSection('add-car');
+        });
+        document.getElementById('nav-view-cars').addEventListener('click', function () {
+            showSection('view-cars');
+        });
+        document.getElementById('nav-buy-scheme').addEventListener('click', function () {
+            showSection('buy-scheme');
+        });
+        document.getElementById('nav-sumit-accident').addEventListener('click', function () {
+            showSection('sumit-accident');
+        });
+        document.getElementById('nav-check-blance').addEventListener('click', function () {
+            showSection('check-blance');
+        });
+        document.getElementById('nav-personal-info').addEventListener('click', function () {
+            showSection('personal-info');
+        });
+
+        function showSection(sectionId) {
+            const sections = document.querySelectorAll('.section');
+            sections.forEach(section => {
+                section.classList.remove('active');
+            });
+            document.getElementById(sectionId).classList.add('active');
+        }
+
+        // 默认展示第一个板块
+        showSection('add-car');
+    </script>
+
+    <!-- 在 HTML 文件中引入 web3.js -->
+    <script src="./web3.min.js"></script>
+    <!-- 引入 contracts.js -->
+    <script src="./libs/contracts.js"></script>
+    <script type="module" src="main.js"></script>
+    <!-- Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    </script>
+
+    <script>
+
+        let web3;
+        // 浏览器环境且已经安装了 Metamask
+        if (typeof window !== 'undefined' && typeof window.web3 !== 'undefined') {
+            web3 = new Web3(window.web3.currentProvider);
+            console.log("装了metamask");
+            // 服务器环境或者没有安装 Metamask
+        } else {
+            web3 = new Web3(new Web3.providers.HttpProvider('http://127.0.0.1:8888'));
+            console.log("没有装metamask");
+        }
+
+
+        // 获取 URL 参数的函数
+        function getUrlParameter(name) {
+            name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
+            var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
+            var results = regex.exec(location.search);
+            return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
+        }
+
+        // 获取参数
+        var carOwnerAddr = getUrlParameter('CarOwnerAddress');
+        // var companyAddr = getUrlParameter('CompanyAddress');
+        // var companyListAddr = getUrlParameter('CompanyListAddress');
+
+        var insurances = [];
+        var allInsurances = [];
+        var insurancedCars = [];
+        var unInsurancedCars = [];
+        // 在页面中显示参数值，你可以根据需要进行处理
+        document.write('<h3>车主合约地址为：' + carOwnerAddr + '</h3>');
+
+        async function first() {
+            const accounts = await ethereum.request({ method: 'eth_requestAccounts' });
+            const owner = accounts[0];
+            console.log("owner", owner);
+
+            const response = await fetch('./compiled/CarOwner.json');
+
+            const carOwnerJson = await response.json();
+
+            // 使用加载的 JSON 数据创建合约对象
+
+            const carOwnerContract = new web3.eth.Contract(carOwnerJson.abi, carOwnerAddr);
+
+            return { carOwnerContract, owner };
+        }
+
+        async function two() {
+            if (!validateForm()) return;
+
+            // const newCar = {
+            //     carNumber: document.querySelector('[placeholder="车牌牌照"]').value,
+            //     carName: document.querySelector('[placeholder="车辆名称"]').value,
+            //     carAge: document.querySelector('[placeholder="车辆年数"]').value,
+            // };
+            const newCar = {
+                carNumber: document.querySelector('[placeholder="车辆牌照"]').value,
+                carName: document.querySelector('[placeholder="车辆名称"]').value,
+                carAge: document.querySelector('[placeholder="车辆年数"]').value,
+            };
+
+            var Contracts = await loadContracts();
+            var AccidentRecordList = Contracts.AccidentRecordList;
+            var BuyRecordList = Contracts.BuyRecordList;
+            var CarOwnerList = Contracts.CarOwnerList;
+            var CompanyList = Contracts.CompanyList;
+            var PolicerList = Contracts.PolicerList;
+
+            return { newCar };
+        }
+
+        async function addCar(event) {
+            event.preventDefault(); // 阻止默认表单提交行为
+
+            try {
+                const { carOwnerContract, owner } = await first();
+                const { newCar } = await two();
+                console.log("carOwnerContract", carOwnerContract);
+                console.log("owner", owner);
+
+                let ownerBalance = await carOwnerContract.methods.getBalance().call({ from: owner });
+                console.log("ownerBalance", ownerBalance);
+
+                await carOwnerContract.methods.addCar(newCar.carNumber, newCar.carName, newCar.carAge).send({
+                    from: owner, gas: 5000000
+                });
+
+                let carIds = await carOwnerContract.methods.getCarIds().call({ from: owner });
+                console.log("carIds", carIds);
+
+                alert("添加车辆成功！");
+            } catch (err) {
+                console.error(err.message);
+                alert(err.message);
+            }
+        }
+
+        async function CarInfo() {
+            const carOwnerContract = await first().then(res => res.carOwnerContract);
+            const owner = await first().then(res => res.owner);
+
+            try {
+                let carIds = await carOwnerContract.methods.getCarIds().call({ from: owner });
+                console.log("carIds", carIds);
+
+                insurances = [];
+                for (let i = 0; i < carIds.length; i++) {
+                    let carInfo = await getCarInfo(carOwnerAddr, carIds[i]);
+                    insurances.push(carInfo);
+                }
+                console.log(insurances);
+                // 打印方案信息到 HTML 页面
+                const carInfoDiv = document.getElementById('car-info');
+                carInfoDiv.innerHTML = ''; // 清空之前的内容
+                insurances.forEach(car => {
+                    const carElement = document.createElement('div');
+                    carElement.classList.add('card', 'mb-3');
+                    carElement.innerHTML = `
+                    <div class="card-body">    
+                    <p class="card-text">
+                        车辆 ID: ${car.carId}&emsp;
+                        车牌拍照: ${car.carNumber}&emsp;
+                        车辆名称: ${car.carName}&emsp;
+                        车辆年数: ${car.carAge}&emsp;
+                        </p>
+                    </div>
+                    `;
+                    carInfoDiv.appendChild(carElement);
+                });
+            } catch (err) {
+                console.error(err.message);
+                alert(err.message);
+            }
+        }
+
+        async function CarsInfo() {
+            const carOwnerContract = await first().then(res => res.carOwnerContract);
+            const owner = await first().then(res => res.owner);
+            try {
+                let carIds = await carOwnerContract.methods.getCarIds().call({ from: owner });
+                console.log("carIds", carIds);
+
+                const insurances = [];
+                for (let i = 0; i < carIds.length; i++) {
+                    let carInfo = await getCarInfo(carOwnerAddr, carIds[i]);
+                    insurances.push(carInfo);
+                }
+
+                // 打印方案信息到 HTML 页面
+                const carInfoDiv = document.getElementById('cars-info');
+                carInfoDiv.innerHTML = ''; // 清空之前的内容
+                insurances.forEach(car => {
+                    const carElement = document.createElement('div');
+                    carElement.classList.add('card', 'mb-3');
+                    // 创建按钮元素  
+                    const buyButton = document.createElement('button');
+                    buyButton.classList.add('btn', 'btn-default', 'btn-primary', 'btn-block'); // 注意：可能 'btn-defaule' 是个拼写错误，我改为了 'btn-default'  
+                    buyButton.textContent = '选择'; // 设置按钮文本  
+
+                    // 设置按钮的自定义样式（如果需要）  
+                    buyButton.style.fontSize = '14px'; // 设置字体大小  
+                    buyButton.style.padding = '5px 10px'; // 设置内边距，控制按钮的大小
+                    buyButton.addEventListener('click', () => {
+                        // 在这里编写点击按钮后要执行的代码  
+
+                        let schemes = getAllSchemes(car.carId);
+                        
+                        // 这里只是模拟了一个点击事件的响应  
+                        console.log('选择车辆:', car);
+                    });
+
+                    // 创建包含车辆信息的p元素  
+                    const carInfoP = document.createElement('p');
+                    carInfoP.classList.add('card-text');
+                    carInfoP.textContent = `车辆 ID: ${car.carId} 车牌拍照: ${car.carNumber} 车辆名称: ${car.carName} 车辆年数: ${car.carAge}`;
+
+                    // 创建一个card-body的div元素并将p元素和按钮添加到其中  
+                    const cardBody = document.createElement('div');
+                    cardBody.classList.add('card-body');
+                    cardBody.appendChild(carInfoP); // 添加车辆信息  
+                    cardBody.appendChild(buyButton); // 添加按钮，此时按钮会出现在文本后面  
+
+                    // 将card-body添加到card元素中  
+                    carElement.appendChild(cardBody);
+
+                    // 将card元素添加到carInfoDiv中  
+                    carInfoDiv.appendChild(carElement);
+
+                });
+            } catch (err) {
+                console.error(err.message);
+                alert(err.message);
+            }
+        }
+
+        async function getCarInfo(carOwnerAddr, carId) {
+            const carOwnerContract = await first().then(res => res.carOwnerContract);
+            let carInfo = await carOwnerContract.methods.getCarInfoById(carId).call();
+            // 返回scheme.Id,scheme.schemeName,scheme.lastTime,scheme.price,scheme.payOut,scheme.onSale共6个值
+            let car = {};
+            car.carId = carInfo[0];
+            car.carNumber = carInfo[1];
+            car.carName = carInfo[2];
+            car.carAge = carInfo[3];
+            return car;
+        }
+
+        async function getNowCars() {
+            const carOwnerContract = await first().then(res => res.carOwnerContract);
+            const owner = await first().then(res => res.owner);
+		    try {
+                insurances = [];
+                let carIds = await carOwnerContract.methods.getCarIds().call();
+                for(var i = 0; i < carIds.length; i++) {
+                    let carInfo = await getCarInfo(carOwnerContract.options.address,carIds[i]);
+                    insurances.push(carInfo);
+                }
+            } catch (err) {
+                alert(err.message);
+            }
+      }
+        
+        async function getCompanySchemes(companyAddr) {
+            const response = await fetch('./compiled/Company.json');
+            const companyJson = await response.json();
+            const CompanyContract = new web3.eth.Contract(companyJson.abi, companyAddr);
+
+            try {
+                let companyName = await CompanyContract.methods.userName().call()
+                console.log(companyName);
+                let schemeIds = await CompanyContract.methods.getSchemeIds().call()
+                console.log(schemeIds);
+                for(var i = 0; i < schemeIds.length; i++) {
+                    let schemeInfo = await getSchemeInfo(companyAddr,schemeIds[i]);
+                    if(schemeInfo.onSale) {
+                        schemeInfo.companyName = companyName;
+                        schemeInfo.companyAddr = companyAddr;
+                        allInsurances.push(schemeInfo);
+                    }
+                }
+            
+            }catch (err) {
+                console.error(err.message);
+                alert(err.message);
+            }
+        }
+
+        async function getSchemeInfo(companyAddr,schemeId) {//获得方案信息
+            const response = await fetch('./compiled/Company.json');
+            const companyJson = await response.json();
+
+            const companyContract = new web3.eth.Contract(companyJson.abi, companyAddr);
+            try {
+                let schemeInfo = await companyContract.methods.getSchemeInfoById(schemeId).call();
+                //返回scheme.Id,scheme.schemeName,scheme.lastTime,scheme.price,scheme.payOut,scheme.onSale共6个值
+                let scheme = {};
+                scheme.schemeId = schemeInfo[0];
+                scheme.schemeName = schemeInfo[1];
+                scheme.lastTime = schemeInfo[2];
+                scheme.price = schemeInfo[3];
+                scheme.payOut = schemeInfo[4];
+                scheme.onSale = schemeInfo[5];
+                return scheme;
+            }catch (err) {
+                console.error(err.message);
+                alert(err.message);
+            }
+            
+        }
+        
+        async function getBuyRecordInfo(buyRecordListContract,buyRecordId) {
+            var Contracts = await loadContracts()
+            var AccidentRecordList = Contracts.AccidentRecordList
+            var BuyRecordList = Contracts.BuyRecordList
+            var CarOwnerList = Contracts.CarOwnerList
+            var CompanyList = Contracts.CompanyList
+            var PolicerList = Contracts.PolicerList
+            //返回结果顺序为buyRecord.Id,buyRecord.carOwner,buyRecord.carId,buyRecord.company
+            //,buyRecord.schemeId,buyRecord.startTime,buyRecord.processState,buyRecord.Balance。共8个返回值
+            let buyRecordInfo = await BuyRecordList.methods.getBuyRecordById(buyRecordId).call();
+            let buyRecord = {};
+            buyRecord.Id = buyRecordInfo[0];
+            buyRecord.carOwnerAddr = buyRecordInfo[1];
+            buyRecord.carId = buyRecordInfo[2];
+            buyRecord.companyAddr = buyRecordInfo[3];
+            buyRecord.schemeId = buyRecordInfo[4];
+            buyRecord.startTime = buyRecordInfo[5];
+            buyRecord.processState = buyRecordInfo[6];
+            buyRecord.balance = buyRecordInfo[7];
+            return buyRecord;
+        }
+        
+        async function overTime(companyAddr,schemeId,startTime) {//根据订单记录判断是否逾期
+            const companyContract = await first().then(res => res.companyContract);
+            const owner = await first().then(res => res.owner);
+            let schemeInfo = await companyContract.methods.getSchemeInfoById(schemeId).call();
+            let lastTime = parseInt(schemeInfo[2]);//以年为单位
+            console.log("订单持续时间："+lastTime);
+            let date = new Date(parseInt(startTime));
+            date.setFullYear(date.getFullYear()+lastTime);//逾期年月日
+            if(new Date().valueOf()>date.valueOf()) return [true,date];//逾期时间与当前时间比较，如果大于就逾期
+            else return [false,date];
+        }
+        
+        async function getAllSchemes(carId) {
+            var Contracts = await loadContracts();
+            var CompanyList = Contracts.CompanyList;
+            // const companyListContract = await first().then(res => res.CompanyListContract);
+            // console.log("companyListContract", companyListContract);
+            try {
+                let companyList = await CompanyList.methods.getCompanyList().call();
+                console.log("companyList", companyList);
+
+                allInsurances = [];
+                for(var i = 0; i < companyList.length; i++) {
+                    let schemesInfo = await getCompanySchemes(companyList[i]);
+
+                }
+
+                // 打印方案信息到 HTML 页面  
+                const schemeInfoDiv = document.getElementById('cars-info');  
+                schemeInfoDiv.innerHTML = ''; // 清空之前的内容  
+                allInsurances.forEach(scheme => {  
+                    const schemeElement = document.createElement('div');  
+                    schemeElement.classList.add('card', 'mb-3');  
+  
+                    // 创建包含方案信息的p元素  
+                    const schemeInfoP = document.createElement('p');  
+                    schemeInfoP.classList.add('card-text');  
+                    schemeInfoP.textContent = `  
+                        方案 ID: ${scheme.schemeId}  
+                        方案名称: ${scheme.schemeName} 
+                        公司名称: ${scheme.companyName} 
+                        有效时长: ${scheme.lastTime}  
+                        价格: ${scheme.price}  
+                        赔付金额: ${scheme.payOut}  
+                        在售: ${scheme.onSale}  
+                    `;  
+  
+                    // 创建按钮元素  
+                    const button = document.createElement('button');  
+                    button.type = 'button'; // 明确指定按钮类型为button，防止表单提交  
+                    button.classList.add('btn', 'btn-primary'); // 添加Bootstrap样式类或其他自定义样式  
+                    button.textContent = '购买'; // 设置按钮文本 
+                    
+                    button.addEventListener('click', async () => {
+                        let startTime = String(new Date().valueOf());
+
+                        var Contracts = await loadContracts()
+                        var AccidentRecordList = Contracts.AccidentRecordList
+                        var BuyRecordList = Contracts.BuyRecordList
+                        var CarOwnerList = Contracts.CarOwnerList
+                        var CompanyList = Contracts.CompanyList
+                        var PolicerList = Contracts.PolicerList
+                        console.log("carid", carId);
+                        const accounts = await ethereum.request({ method: 'eth_requestAccounts' });
+                        const owner = accounts[0];
+                        const response = await fetch('./compiled/CarOwner.json');
+                        const carOwnerJson = await response.json();
+                        let ownerAddr = await CarOwnerList.methods.creatorOwnerMap(owner).call();
+                        const carOwnerContract = new web3.eth.Contract(carOwnerJson.abi, ownerAddr);
+
+                        await BuyRecordList.methods.addBuyRecord(CarOwnerList.options.address, ownerAddr,
+                            carId, scheme.companyAddr, scheme.schemeId, startTime, scheme.price).send({
+                                from: owner, gas: 5000000
+                        }).then(async () => {
+                            alert("投保成功");                            
+                            //在修改车辆的buyRecordId后需要更新cars,insurancedCars,unInsurancedCars
+                            await getNowCars();
+                            await getInsuranceAboutCars();
+                        }).catch((err) => {
+                            console.error(err.message);
+                            alert(err.message);
+                        })
+
+                    });
+  
+                    // 创建一个card-body的div元素并将p元素和按钮添加到其中  
+                    const cardBody = document.createElement('div');  
+                    cardBody.classList.add('card-body');  
+                    cardBody.appendChild(schemeInfoP); // 添加方案信息  
+                    cardBody.appendChild(button); // 添加按钮到信息后面  
+  
+                    // 确保按钮与文本保持在同一行（如果需要的话，通过CSS样式）  
+                    // 例如，给按钮添加 display: inline-block; 或者 float: left; 等样式  
+  
+                    // 将card-body添加到card元素中  
+                    schemeElement.appendChild(cardBody);  
+  
+                    // 将card元素添加到schemeInfoDiv中  
+                    schemeInfoDiv.appendChild(schemeElement);  
+                });
+            } catch (err) {
+                console.error(err.message);
+                alert(err.message);
+            }
+        }
+
+        async function getInsuranceAboutCars() {
+            insurancedCars = [];
+            unInsurancedCars = [];
+
+            var Contracts = await loadContracts()
+            var AccidentRecordList = Contracts.AccidentRecordList
+            var BuyRecordList = Contracts.BuyRecordList
+            var CarOwnerList = Contracts.CarOwnerList
+            var CompanyList = Contracts.CompanyList
+            var PolicerList = Contracts.PolicerList
+
+            console.log(insurances);
+            //挑出所有已经参保并且通过审批的车辆信息(包含订单信息)，和未参保或者参保被拒绝或者参保逾期的车辆信息
+            for (var i = 0; i < insurances.length; i++) {
+                if (insurances[i].buyRecordId != 0) {
+                    try {
+                        let buyRecord = await getBuyRecordInfo(BuyRecordList, insurances[i].buyRecordId);
+                        console.log(buyRecord.carId);
+                        console.log(buyRecord.schemeId);
+                        console.log(buyRecord.processState);
+                        if (buyRecord.processState == 1) {//已经获得同意并且没有逾期才可以提交事故
+                            let overtime = await overTime(buyRecord.companyAddr, buyRecord.schemeId, buyRecord.startTime);//根据buyRecordId就能判断该条保险记录有无逾期
+                            if (!overtime[0]) {//overtime[0]为true代表逾期,没有逾期的车辆进入insurancedCars数组
+                                let insurancedCarInfo = insurances[i];
+                                insurancedCarInfo.carOwnerAddr = buyRecord.carOwnerAddr;
+                                insurancedCarInfo.carId = buyRecord.carId;
+                                insurancedCarInfo.companyAddr = buyRecord.companyAddr;
+                                insurancedCarInfo.schemeId = buyRecord.schemeId;
+                                insurancedCars.push(insurancedCarInfo);
+                                console.log(insurancedCars);
+                                
+                            } else {//已经逾期的订单对应车辆可以购买保险
+                                unInsurancedCars.push(insurances[i]);
+                                console.log(unInsurancedCars);
+                            }
+                        } else if (buyRecord.processState == 2) {//已经被拒绝订单的车辆可以购买保险
+                            unInsurancedCars.push(insurances[i]);
+                            console.log(unInsurancedCars);
+
+                        }
+                    } catch (err) {
+                        console.log(err.message);
+                        alert(err.message);                    
+                    }
+                    
+                } else {//未投保的车辆可以购买保险
+                    unInsurancedCars.push(insurances[i]);
+                    console.log(unInsurancedCars);
+
+                }
+            }
+            const schemeInfoDiv = document.getElementById('accidentCar-info');  
+            schemeInfoDiv.innerHTML = ''; // 清空之前的内容  
+  
+            // 创建一个文档片段来收集要添加到DOM的元素  
+            const fragment = document.createDocumentFragment();  
+  
+            insurancedCars.forEach(buyRecord => {  
+                console.log("forEach里获取buyRecord:",buyRecord);                
+                // 创建一个card元素  
+                const schemeElement = document.createElement('div');  
+                schemeElement.classList.add('card', 'mb-3');  
+  
+                // 创建一个包含方案信息的p元素  
+                const schemeInfoP = document.createElement('p');  
+                schemeInfoP.classList.add('card-text');  
+                schemeInfoP.textContent = `  
+                    车牌号码: ${buyRecord.carNumber || '未知'}
+                    车辆名称: ${buyRecord.carName || '未知'}
+                    车辆年数: ${buyRecord.carAge || '未知'}
+                `;  
+  
+                // 创建一个按钮元素  
+                const Button  = document.createElement('button');  
+                Button.type = 'button';  
+                Button.classList.add('btn', 'btn-primary');  
+                Button.textContent = '提交事故'; 
+                Button.addEventListener('click', async () => {  
+                    // 处理按钮点击事件  
+                    let detail = submitAccident(buyRecords);
+                });  
+  
+                // 创建一个card-body的div元素并将p元素和按钮添加到其中  
+                const cardBody = document.createElement('div');  
+                cardBody.classList.add('card-body');  
+                cardBody.appendChild(schemeInfoP);  
+                cardBody.appendChild(Button); 
+  
+                // 将card-body添加到card元素中  
+                schemeElement.appendChild(cardBody);  
+  
+                // 将card元素添加到文档片段中  
+                fragment.appendChild(schemeElement);  
+            });  
+  
+            // 将文档片段中的所有元素一次性添加到页面上  
+            schemeInfoDiv.appendChild(fragment);
+        }
+
+        //生成从minNum到maxNum的随机数,随机区间为[minNum,maxNum]
+        function randomNum(minNum,maxNum){
+            return parseInt(Math.random()*(maxNum-minNum+1)+minNum,10);
+        }
+        function randomVal(valArr){
+		    let index = randomNum(0,valArr.length-1);
+		    return valArr[index];
+        }
+
+        async function submitAccident(item) {
+            const carOwnerContract = await first().then(res => res.carOwnerContract);
+            const owner = await first().then(res => res.owner);
+
+            var Contracts = await loadContracts()
+            var AccidentRecordList = Contracts.AccidentRecordList
+            var BuyRecordList = Contracts.BuyRecordList
+            var CarOwnerList = Contracts.CarOwnerList
+            var CompanyList = Contracts.CompanyList
+            var PolicerList = Contracts.PolicerList
+
+		    //此item包含有车辆信息和订单，如carId,carNumber,carName,carAge,buyRecordId,carOwnerAddr,companyAddr,schemeId
+            //随机生成事故信息
+            let describe = randomVal(window.myData.site)+","+randomVal(window.myData.weather)
+                      +","+randomVal(window.myData.roadLevel)+","+randomVal(window.myData.roadSituation)
+                      +","+randomVal(window.myData.trafficSituation)+","+randomVal(window.myData.damage)
+                      +","+randomVal(window.myData.speed)+","+randomVal(window.myData.acceleration)
+                      +","+randomVal(window.myData.alcohol);
+            let curTime = new Date().valueOf();
+            let loss = randomVal(window.myData.loss);//事故损失
+            debugger
+            AccidentRecordList.methods.addAccidentRecord(CarOwnerList.options.address,item.carOwnerAddr,
+            item.carId,curTime,describe,item.companyAddr,item.schemeId,loss).send({
+            from:owner,gas:5000000
+            }).then(()=>{
+                alert("已将事故信息上传！");
+            }).catch((err)=>{
+                alert = err.message;
+            });
+        }
+        
+        async function getBalance() {
+            const carOwnerContract = await first().then(res => res.carOwnerContract);
+            const owner = await first().then(res => res.owner);
+            const balance = await carOwnerContract.methods.getBalance().call({ from: owner });
+            if (balance > 0) {
+                console.log("Balance: " + balance);
+                document.getElementById("balance-info").innerHTML = "您现在的账户余额为： " + balance + " ETH";
+            } else {
+                document.getElementById("balance-info").innerHTML = "您的账户余额为： 0 ETH";
+            }
+        }
+        
+        function validateForm() {
+            // const carNumber = document.querySelector('[placeholder="车牌号"]').value;
+            // const carName = document.querySelector('[placeholder="车辆名称"]').value;
+            // const carAge = document.querySelector('[placeholder="车龄"]').value;
+            const carNumber = document.querySelector('[placeholder="车辆牌照"]').value;
+            const carName = document.querySelector('[placeholder="车辆名称"]').value;
+            const carAge = document.querySelector('[placeholder="车辆年数"]').value;
+            if (!(carNumber && carName && carAge)) {
+                alert("请把信息补充完整！");
+                return false;
+            }
+            return true;
+        }
+
+    </script>
+
+</body>
+
+</html>

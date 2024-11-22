@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="light">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registration Form</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>Contact - Brand</title>
+    <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:300,400,700&amp;display=swap">
+    <link rel="stylesheet" href="assets/fonts/ionicons.min.css">
+    <link rel="stylesheet" href="assets/css/pikaday.min.css">
+
+
+    <style>
+        .section {
+            display: none;
+        }
+
+        .active {
+            display: block;
+        }
+
+        nav a {
+            margin: 0 15px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+
+    <nav class="navbar navbar-expand-lg fixed-top portfolio-navbar gradient navbar-dark">
+        <div class="container"><a class="navbar-brand logo" href="#">Brand</a><button data-bs-toggle="collapse"
+                class="navbar-toggler" data-bs-target="#navbarNav"><span class="visually-hidden">Toggle
+                    navigation</span><span class="navbar-toggler-icon"></span></button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="home.html">首页</a></li>
+                    <li class="nav-item"><a id="nav-add-scheme" class="nav-link">添加保险</a></li>
+                    <li class="nav-item"><a id="nav-view-schemes" class="nav-link">查询所有保险</a></li>
+                    <li class="nav-item"><a id="nav-personal-info" class="nav-link">个人信息</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+
+
+
+    <div id="add-scheme" class="section">
+        <div class="container">
+            <main class="page contact-page">
+                <section class="portfolio-block contact">
+                    <div class="container">
+                        <div class="heading">
+                            <br><br>
+                            <h1>添加保险</h1>
+                        </div>
+                        <form class="form-signin" data-bs-theme="light" onsubmit="addScheme(event)">
+                            <h4>请在此添加保险信息</h4>
+                            <input type="text" class="form-control" placeholder="保险名称" required
+                                v-model="schemeInfo.schemeName">
+                            <input type="text" class="form-control" placeholder="有效时长(年)" required
+                                v-model="schemeInfo.lastTime">
+                            <input type="text" class="form-control" placeholder="价格" required
+                                v-model="schemeInfo.price">
+                            <input type="text" class="form-control" placeholder="赔付金额" required
+                                v-model="schemeInfo.payOut">
+                            <br>
+                            <button class="btn btn-primary btn-block" type="submit">添加保险</button>
+                        </form>
+                    </div>
+                </section>
+            </main>
+        </div> <!-- /container -->
+    </div>
+
+    <div id="view-schemes" class="section">
+
+        <div class="container">
+            <main class="page contact-page">
+                <section class="portfolio-block contact">
+                    <div class="container">
+                        <main class="page contact-page">
+                            <div class="heading">
+                                <br><br>
+                                <h1>保险列表</h1>
+                            </div>
+                            <button class="btn btn-primary btn-block" onclick="SchemeInfo()">获取保险列表</button>
+                            <!-- 显示保险信息的区域 -->
+                            <div id="scheme-info" class="mt-4"></div>
+                        </main>
+                    </div> <!-- /container -->
+                </section>
+            </main>
+        </div> <!-- /container -->
+
+    </div>
+
+
+    <script>
+        document.getElementById('nav-add-scheme').addEventListener('click', function () {
+            showSection('add-scheme');
+        });
+        document.getElementById('nav-view-schemes').addEventListener('click', function () {
+            showSection('view-schemes');
+        });
+        document.getElementById('nav-personal-info').addEventListener('click', function () {
+            showSection('personal-info');
+        });
+
+        function showSection(sectionId) {
+            const sections = document.querySelectorAll('.section');
+            sections.forEach(section => {
+                section.classList.remove('active');
+            });
+            document.getElementById(sectionId).classList.add('active');
+        }
+
+        // 默认展示第一个板块
+        showSection('add-scheme');
+    </script>
+
+    <!-- 在 HTML 文件中引入 web3.js -->
+    <script src="./web3.min.js"></script>
+    <!-- 引入 contracts.js -->
+    <script src="./libs/contracts.js"></script>
+    <!-- Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <script>
+        let web3;
+        // 浏览器环境且已经安装了 Metamask
+        if (typeof window !== 'undefined' && typeof window.web3 !== 'undefined') {
+            web3 = new Web3(window.web3.currentProvider);
+            console.log("装了metamask");
+            // 服务器环境或者没有安装 Metamask
+        } else {
+            web3 = new Web3(new Web3.providers.HttpProvider('http://127.0.0.1:8888'));
+            console.log("没有装metamask");
+        }
+
+        // 获取 URL 参数的函数
+        function getUrlParameter(name) {
+            name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
+            var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
+            var results = regex.exec(location.search);
+            return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
+        }
+
+        // 获取参数
+        var companyAddr = getUrlParameter('companyAddress');
+
+        // 在页面中显示参数值，你可以根据需要进行处理
+        document.write('<h3>保险公司合约地址为：' + companyAddr + '</h3>');
+
+        async function first() {
+            const accounts = await ethereum.request({ method: 'eth_requestAccounts' });
+            const owner = accounts[0];
+            console.log("owner", owner);
+
+            const response = await fetch('./compiled/Company.json');
+            const companyJson = await response.json();
+            // 使用加载的 JSON 数据创建合约对象
+
+            const companyContract = new web3.eth.Contract(companyJson.abi, companyAddr);
+
+            return { companyContract, owner };
+        }
+
+        async function two() {
+            if (!validateForm()) return;
+
+            const newScheme = {
+                schemeName: document.querySelector('[placeholder="保险名称"]').value,
+                lastTime: document.querySelector('[placeholder="有效时长(年)"]').value,
+                price: document.querySelector('[placeholder="价格"]').value,
+                payOut: document.querySelector('[placeholder="赔付金额"]').value,
+            };
+
+            var Contracts = await loadContracts();
+            var AccidentRecordList = Contracts.AccidentRecordList;
+            var BuyRecordList = Contracts.BuyRecordList;
+            var CarOwnerList = Contracts.CarOwnerList;
+            var CompanyList = Contracts.CompanyList;
+            var PolicerList = Contracts.PolicerList;
+
+            return { newScheme };
+        }
+
+        async function addScheme(event) {
+            event.preventDefault(); // 阻止默认表单提交行为
+
+            try {
+                const { companyContract, owner } = await first();
+                const { newScheme } = await two();
+                console.log("companyContract", companyContract);
+                console.log("owner", owner);
+
+                let ownerBalance = await companyContract.methods.getBalance().call({ from: owner });
+                console.log("ownerBalance", ownerBalance);
+
+                await companyContract.methods.addScheme(newScheme.schemeName, newScheme.lastTime, newScheme.price, newScheme.payOut).send({
+                    from: owner, gas: 5000000
+                });
+
+                let schemeIds = await companyContract.methods.getSchemeIds().call({ from: owner });
+                console.log("schemeIds", schemeIds);
+
+                alert("添加保险成功！");
+            } catch (err) {
+                console.error(err.message);
+                alert(err.message);
+            }
+        }
+
+        async function SchemeInfo() {
+            const companyContract = await first().then(res => res.companyContract);
+            const owner = await first().then(res => res.owner);
+
+            try {
+                let schemeIds = await companyContract.methods.getSchemeIds().call({ from: owner });
+                console.log("schemeIds", schemeIds);
+
+                const insurances = [];
+                for (let i = 0; i < schemeIds.length; i++) {
+                    let schemeInfo = await getSchemeInfo(companyAddr, schemeIds[i]);
+                    insurances.push(schemeInfo);
+                }
+
+                // 打印方案信息到 HTML 页面
+                const schemeInfoDiv = document.getElementById('scheme-info');
+                schemeInfoDiv.innerHTML = ''; // 清空之前的内容
+                insurances.forEach(scheme => {
+                    const schemeElement = document.createElement('div');
+                    schemeElement.classList.add('card', 'mb-3');
+                    schemeElement.innerHTML = `
+                    <div class="card-body">    
+                    <p class="card-text">
+                        方案 ID: ${scheme.schemeId}&emsp;
+                        方案名称: ${scheme.schemeName}&emsp;
+                        有效时长: ${scheme.lastTime}&emsp;
+                        价格: ${scheme.price}&emsp;
+                        赔付金额: ${scheme.payOut}&emsp;
+                        在售: ${scheme.onSale}
+                        </p>
+                    </div>
+                    `;
+                    schemeInfoDiv.appendChild(schemeElement);
+                });
+            } catch (err) {
+                console.error(err.message);
+                alert(err.message);
+            }
+        }
+
+        async function getSchemeInfo(companyAddr, schemeId) {
+            const companyContract = await first().then(res => res.companyContract);
+            let schemeInfo = await companyContract.methods.getSchemeInfoById(schemeId).call();
+            // 返回scheme.Id,scheme.schemeName,scheme.lastTime,scheme.price,scheme.payOut,scheme.onSale共6个值
+            let scheme = {};
+            scheme.schemeId = schemeInfo[0];
+            scheme.schemeName = schemeInfo[1];
+            scheme.lastTime = schemeInfo[2];
+            scheme.price = schemeInfo[3];
+            scheme.payOut = schemeInfo[4];
+            scheme.onSale = schemeInfo[5];
+            return scheme;
+        }
+
+        function validateForm() {
+            const schemeName = document.querySelector('[placeholder="保险名称"]').value;
+            const lastTime = document.querySelector('[placeholder="有效时长(年)"]').value;
+            const price = document.querySelector('[placeholder="价格"]').value;
+            const payOut = document.querySelector('[placeholder="赔付金额"]').value;
+            if (!(schemeName && lastTime && price && payOut)) {
+                alert("请把信息补充完整！");
+                return false;
+            }
+            return true;
+        }
+    </script>
+
+</body>
+
+</html>

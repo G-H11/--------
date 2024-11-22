@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="light">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registration Form</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>Contact - Brand</title>
+    <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:300,400,700&amp;display=swap">
+    <link rel="stylesheet" href="assets/fonts/ionicons.min.css">
+    <link rel="stylesheet" href="assets/css/pikaday.min.css">
+</head>
+
+<body>
+
+    <nav class="navbar navbar-expand-lg fixed-top portfolio-navbar gradient navbar-dark">
+        <div class="container"><a class="navbar-brand logo" href="#">Brand</a><button data-bs-toggle="collapse"
+                class="navbar-toggler" data-bs-target="#navbarNav"><span class="visually-hidden">Toggle
+                    navigation</span><span class="navbar-toggler-icon"></span></button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="home.html">首页</a></li>
+                    <li class="nav-item"><a class="nav-link" href="projects-grid-cards.html">Projects</a></li>
+                    <li class="nav-item"><a class="nav-link" href="cv.html">CV</a></li>
+                    <li class="nav-item"><a class="nav-link" href="hire-me.html">Hire me</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+
+    <div id="app" class="registry">
+        <div>
+            <!-- Alert Component -->
+            <div v-if="alert" class="alert alert-danger alert-dismissible fade show" role="alert">
+                {{ alert }}
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close" @click="alert = ''">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        </div>
+        <div class="container">
+
+            <main class="page contact-page">
+                <section class="portfolio-block contact">
+                    <div class="container">
+                        <div class="heading">
+                            <br><br>
+                            <h1>购买保险</h1>
+                        </div>
+                        <form class="form-signin" data-bs-theme="light" @submit.prevent="buyInsurance ">
+
+                            <h4>请在此添加购买保险信息</h4>
+                            <input type="text" class="form-control" placeholder="车辆ID" required autofocus v-model="buySchemes.carId">
+
+                            <input type="text" class="form-control" placeholder="保险ID" required v-model="buySchemes.buyRecordId">                        
+
+                            <br>
+                            <button class="btn btn-primary btn-block" type="submit">点此购买</button>
+
+                        </form>
+                    </div>
+                </section>
+            </main>
+        </div> <!-- /container -->
+    </div>
+
+    <!-- Vue.js CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
+
+    <!-- 在 HTML 文件中引入 web3.js -->
+    <script src="./web3.min.js"></script>
+
+
+    <!-- 引入 contracts.js -->
+    <script src="./libs/contracts.js"></script>
+    <!-- <script src="./libs/carOwner.js" defer></script> -->
+
+
+    <!-- Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <script>
+
+        let web3;
+        // 浏览器环境且已经安装了 Metamask
+        if (typeof window !== 'undefined' && typeof window.web3 !== 'undefined') {
+            web3 = new Web3(window.web3.currentProvider);
+            console.log("装了metamask");
+            // 服务器环境或者没有安装 Metamask
+        } else {
+            web3 = new Web3(new Web3.providers.HttpProvider('http://127.0.0.1:8888'));
+            console.log("没有装metamask");
+        }
+
+
+        // 获取 URL 参数的函数
+        function getUrlParameter(name) {
+            name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
+            var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
+            var results = regex.exec(location.search);
+            return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
+        }
+
+        // 获取参数
+        var carOwnerAddr = getUrlParameter('CarOwnerAddress');
+
+        // 在页面中显示参数值，你可以根据需要进行处理
+        document.write('<h3>车主合约地址为：' + carOwnerAddr + '</h3>');
+
+
+        new Vue({
+            el: '#app',
+            data: {
+                buySchemes: {
+                    carId: '',
+                    buyRecordId: '',
+                },
+                alert: '',
+                contracts: {} // 初始化 Contracts 对象
+            },
+            methods: {
+                async buyInsurance() {
+                    if (!this.validateForm()) return;
+
+                    const newbuyScheme = {
+                        carId: this.buySchemes.carId,
+                        buyRecordId: this.buySchemes.buyRecordId,
+                    };
+
+                    var Contracts = await loadContracts()
+                    var AccidentRecordList = Contracts.AccidentRecordList
+                    var BuyRecordList = Contracts.BuyRecordList
+                    var CarOwnerList = Contracts.CarOwnerList
+                    var CompanyList = Contracts.CompanyList
+                    var PolicerList = Contracts.PolicerList
+
+
+                    try {
+                        const accounts = await ethereum.request({ method: 'eth_requestAccounts' });
+                        const owner = accounts[0];
+
+                        const response = await fetch('./compiled/CarOwner.json');
+                        const carOwnerJson = await response.json();
+                        // 使用加载的 JSON 数据创建合约对象
+
+                        const carOwnerContract = new web3.eth.Contract(CarOwner.abi, carOwnerAddr);
+
+                        let ownerBalance = await carOwnerContract.methods.getBalance().call({ from: owner });
+                        console.log("ownerBalance", ownerBalance);
+
+                        await carOwnerContract.methods.buyInsurance(newbuyInsurance.carId, newbuyInsurance.buyRecordId).send({
+                            from: owner, gas: 5000000
+                        });
+                        console.log(newbuyInsurance);
+                        // let SchemeIds =await companyContract.methods.getSchemeIds().call({ from: owner });
+                        // console.log("SchemeIds", SchemeIds);
+                        
+                           
+                    } catch (err) {
+                        console.error(err.message);
+                        this.alert = err.message;
+                    }
+
+                },
+                validateForm() {
+                    if (!(this.buySchemes.carId && this.buySchemes.buyRecordId )) {
+                        alert("请把信息补充完整！");
+                    }
+
+                    return true;
+                }
+            }
+        });
+    </script>
+
+</body>
+
+</html>

@@ -1,0 +1,715 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="light">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> </title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>Contact - Brand</title>
+    <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:300,400,700&amp;display=swap">
+    <link rel="stylesheet" href="assets/fonts/ionicons.min.css">
+    <link rel="stylesheet" href="assets/css/pikaday.min.css">
+
+</head>
+
+<body>
+
+    <nav class="navbar navbar-expand-lg fixed-top portfolio-navbar gradient navbar-dark">
+        <div class="container"><a class="navbar-brand logo" href="#">Brand</a><button data-bs-toggle="collapse"
+                class="navbar-toggler" data-bs-target="#navbarNav"><span class="visually-hidden">Toggle
+                    navigation</span><span class="navbar-toggler-icon"></span></button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="home.html">首页</a></li>
+                    <li class="nav-item"><a class="nav-link" href="projects-grid-cards.html">Projects</a></li>
+                    <li class="nav-item"><a class="nav-link" href="cv.html">CV</a></li>
+                    <li class="nav-item"><a class="nav-link" href="hire-me.html">Hire me</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+
+    <div id="app" class="registry">
+        <div>
+            <!-- Alert Component -->
+            <div v-if="alert" class="alert alert-danger alert-dismissible fade show" role="alert">
+                {{ alert }}
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close" @click="alert = ''">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        </div>
+        <div class="container">
+
+
+            <main class="page contact-page">
+                <section class="portfolio-block contact">
+                    <div class="container">
+                        <div class="heading">
+                            <br><br>
+                        </div>
+                        <form class="form-signin" data-bs-theme="light" @submit.prevent="balance11">
+                            <button class="btn btn-primary btn-block" type="submit">余额</button><br>
+                            <br>
+                        </form>
+                        <div v-if="!one">
+                            <form class="form-signin" data-bs-theme="light" @submit.prevent="clickOne">
+                                <button class="btn btn-primary btn-block" type="submit">添加车辆</button><br>
+                                <br>
+                            </form>
+                        </div>
+
+                        <div v-if="one" class="container">
+
+
+                            <main class="page contact-page">
+                                <section class="portfolio-block contact">
+                                    <div class="container">
+                                        <div class="heading">
+                                            <br><br>
+                                            <h1>创建车辆</h1>
+                                        </div>
+                                        <form class="form-signin" data-bs-theme="light" @submit.prevent="addCar">
+
+                                            <h4>请在此添加车辆信息</h4>
+                                            <input type="text" class="form-control" placeholder="车辆牌照" required
+                                                autofocus v-model="car.carNumber">
+
+                                            <input type="text" class="form-control" placeholder="车辆名称" required
+                                                v-model="car.carName">
+
+                                            <input type="text" class="form-control" placeholder="车辆年数" required
+                                                v-model="car.carAge">
+
+
+                                            <br>
+                                            <button class="btn btn-primary btn-block" type="submit">添加车辆</button>
+
+                                            <button @click="one=!one"
+                                                class="btn btn-lg btn-secondary btn-block">返回</button>
+
+                                        </form>
+                                    </div>
+                                </section>
+                            </main>
+                        </div> <!-- /container -->
+
+                        <div v-if="!four">
+                            <form class="form-signin" data-bs-theme="light" @submit.prevent="clickFour">
+                                <button class="btn btn-primary btn-block" type="submit">购买保险</button><br>
+                                <br>
+                            </form>
+                        </div>
+
+                        <div v-if="four&&!fourr" class="container">
+
+
+                            <main class="page contact-page">
+                                <section class="portfolio-block contact">
+                                    <div class="container">
+                                        <div class="heading">
+                                            <br><br>
+                                        </div>
+                                        <br>
+                                        <br>
+                                        <h2 class="form-signin-heading">您有这些车辆还未投保哦</h2><br>
+                                        <div style="background-color: #ddd;width: 70%;margin: 30px auto;">
+
+                                            <table class="table table-striped">
+
+                                                <thead>
+                                                    <tr>
+                                                        <!-- <th>系统识别号</th> -->
+                                                        <th>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;车辆ID
+                                                        </th>
+                                                        <th>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;车牌号码
+                                                        </th>
+                                                        <th>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;车辆名称
+                                                        </th>
+                                                        <th>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;车辆年数
+                                                        </th>
+                                                        <th></th>
+                                                    </tr>
+                                                </thead>
+
+                                                <tbody>
+                                                    <tr v-for="item in unInsurancedCars">
+                                                        <!-- <td>{{item.id}}</td> -->
+                                                        <td>{{item.carId}}</td>
+                                                        <td>{{item.carNumber}}</td>
+                                                        <td>{{item.carName}}</td>
+                                                        <td>{{item.carAge}}</td>
+
+
+                                                        <td><button @click="BuyButton1(item)"
+                                                                class="btn btn-defaule btn-primary btn-block">选择</button>
+                                                        </td>
+
+
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                            <button @click="four=!four"
+                                                class="btn btn-lg btn-secondary btn-block">返回</button>
+                                        </div>
+                                    </div>
+                        </div>
+
+
+                        <div v-if="fourr">
+                            <br>
+                            <h2 class="form-signin-heading">您可以选择这些保险方案</h2><br>
+                            <div style="background-color: #ddd;width: 70%;margin: 30px auto;">
+
+                                <table class="table table-striped">
+
+                                    <thead>
+                                        <tr>
+                                            <!-- <th>系统识别号</th> -->
+                                            <th>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;保险名称
+                                            </th>
+                                            <th>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;所属公司
+                                            </th>
+                                            <th>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;有效时长（年）
+                                            </th>
+                                            <th>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;售卖价格
+                                            </th>
+                                            <th>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;最高赔付
+                                            </th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+
+                                    <tbody>
+                                        <tr v-for="item in allInsurances">
+                                            <!-- <td>{{item.id}}</td> -->
+                                            <td>{{item.schemeName}}</td>
+                                            <td>{{item.companyName}}</td>
+                                            <td>{{item.lastTime}}</td>
+                                            <td>{{item.price}}</td>
+                                            <td>{{item.payOut}}</td>
+                                            <td><button @click="BuyButton2(item)"
+                                                    class="btn btn-defaule btn-primary btn-block">购买</button></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <button @click="fourr=!fourr" class="btn btn-lg btn-secondary btn-block">返回上一页</button>
+                            </div>
+                        </div>
+
+                    </div>
+                </section>
+            </main>
+        </div> <!-- /container -->
+
+        <div>
+            <div v-if="!six">
+                <form class="form-signin" data-bs-theme="light" @submit.prevent="clickSix">
+                    <button class="btn btn-primary btn-block" type="submit">事故提交</button><br>
+                    <br>
+                </form>
+            </div>
+
+            <div v-if="six">
+                <div style="background-color: #ddd;width: 70%;margin: 30px auto;">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <!-- <th>系统识别号</th> -->
+                                <th>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;车牌号码
+                                </th>
+                                <th>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;车辆名称
+                                </th>
+                                <th>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;车辆年数
+                                </th>
+                                <th></th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            <tr v-for="item in insurancedCars">
+                                <!--只有已经参保且获得通过且未逾期的车辆才会有提交事故的资格-->
+                                <!-- <td>{{item.id}}</td> -->
+                                <td>{{item.carNumber}}</td>
+                                <td>{{item.carName}}</td>
+                                <td>{{item.carAge}}</td>
+                                <td><button class="btn btn-primary" @click="submitAccident(item)">提交事故</button></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <button @click="six=!six" class="btn btn-lg btn-secondary btn-block">返回</button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Vue.js CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
+
+    <!-- 引入 contracts.js 文件 -->
+    <!-- <script type="module" src="contracts.js"></script> -->
+
+
+    <!-- 在 HTML 文件中引入 web3.js -->
+    <script src="./web3.min.js"></script>
+
+
+    <!-- 引入 contracts.js -->
+    <script src="./libs/contracts.js"></script>
+
+    <!-- Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <script>
+
+        let web3;
+        // 浏览器环境且已经安装了 Metamask
+        if (typeof window !== 'undefined' && typeof window.web3 !== 'undefined') {
+            web3 = new Web3(window.web3.currentProvider);
+            console.log("装了metamask");
+            // 服务器环境或者没有安装 Metamask
+        } else {
+            web3 = new Web3(new Web3.providers.HttpProvider('http://127.0.0.1:8888'));
+            console.log("没有装metamask");
+        }
+
+
+        // 获取 URL 参数的函数
+        function getUrlParameter(name) {
+            name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
+            var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
+            var results = regex.exec(location.search);
+            return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
+        }
+
+        // 获取参数
+        var carOwnerAddr = getUrlParameter('CarOwnerAddress');
+
+        // 在页面中显示参数值，你可以根据需要进行处理
+        document.write('<h3>车主合约地址为：' + carOwnerAddr + '</h3>');
+
+        new Vue({
+            el: '#app',
+            data: {
+                allInsurances: [],//所有保险方案
+
+                four: false, fourr: false,//买保险用div
+                insurancedCars: [],//车主所有已经投保并且获得通过且没有逾期的车辆
+
+                unInsurancedCars: [],//车主所有没有投保或者参保逾期或者投保被拒绝的车辆
+                cars: [],//查询所有车辆信息时存放车辆们的信息
+                targetCar: {},//买保险时选择的车辆
+
+                car: {
+                    carNumber: '',
+                    carName: '',
+                    carAge: '',
+                },
+                six: false,
+
+                one: false,
+                user: {
+                    userName: '',
+                    gender: true,
+                    companyNo: '',
+                    policerNo: '',
+                    phone: '',
+                    password: '',
+                    confirm: '',
+                    type: '车主'
+                },
+                types: ['车主', '保险公司', '交警'],
+                alert: '',
+                contracts: {} // 初始化 Contracts 对象
+            },
+            async created() {
+
+
+                await this.getNowCars();
+            },
+            methods: {
+                async balance11() {
+                    var Contracts = await loadContracts()
+                    var AccidentRecordList = Contracts.AccidentRecordList
+                    var BuyRecordList = Contracts.BuyRecordList
+                    var CarOwnerList = Contracts.CarOwnerList
+                    var CompanyList = Contracts.CompanyList
+                    var PolicerList = Contracts.PolicerList
+                    const accounts = await ethereum.request({ method: 'eth_requestAccounts' });
+                    const owner = accounts[0];
+                    const response = await fetch('./compiled/CarOwner.json');
+                    const carOwnerJson = await response.json();
+                    let ownerAddr = await CarOwnerList.methods.creatorOwnerMap(owner).call();
+                    const carOwnerContract = new web3.eth.Contract(carOwnerJson.abi, ownerAddr);
+                    var balance = await carOwnerContract.methods.getBalance().call({
+                        from: owner
+                    });
+                    alert(balance);
+                },
+                //生成从minNum到maxNum的随机数,随机区间为[minNum,maxNum]
+                randomNum(minNum, maxNum) {
+                    return parseInt(Math.random() * (maxNum - minNum + 1) + minNum, 10);
+                },
+                randomVal(valArr) {
+                    console.log("aaaaaaaa", valArr.length - 1);
+                    let index = this.randomNum(0, valArr.length - 1);
+                    return valArr[index];
+                },
+                async submitAccident(item) {
+                    var Contracts = await loadContracts()
+                    var AccidentRecordList = Contracts.AccidentRecordList
+                    var BuyRecordList = Contracts.BuyRecordList
+                    var CarOwnerList = Contracts.CarOwnerList
+                    var CompanyList = Contracts.CompanyList
+                    var PolicerList = Contracts.PolicerList
+
+                    const accounts = await ethereum.request({ method: 'eth_requestAccounts' });
+                    const owner = accounts[0];
+
+                    const sites = ['春晖小区', '古荡街道', '鄱阳湖大桥', '五环高架', '市菜市场', '港珠澳大桥'];
+                    const weathers = ['晴', '小雨', '暴雨', '大雨', '中雨', '阴天', '雾霾', '雪天', '冰雹', '沙尘暴'];
+                    const roadLevels = ['高速公路', '国道', '省道', '市道', '县级公路', '水泥路', '乡村土路'];
+                    const roadSituations = ['直平', '弯道', '上坡', '下坡', '颠簸崎岖'];
+                    const trafficSituations = ['空旷', '少许行人车辆', '正常人流车流', '堵车', '重度堵车'];
+                    const damages = ['擦碰', '轻微变形', '中度损坏', '完全损坏'];
+                    const speeds = [10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 110, 120, 130, 140, 150, 160];
+                    const accelerations = [5, 10, 15, 25, 30, 35, 40, 45, 50];
+                    const alcoholDetections = ['no', 'yes'];
+                    const loss2 = [100, 200, 500, 800, 1000, 1500, 2000, 3000, 4000, 5000, 8000, 10000];
+                    //此item包含有车辆信息和订单，如carId,carNumber,carName,carAge,buyRecordId,carOwnerAddr,companyAddr,schemeId
+                    //随机生成事故信息
+                    let describe = this.randomVal(sites) + "," + this.randomVal(weathers)
+                        + "," + this.randomVal(roadLevels) + "," + this.randomVal(roadSituations)
+                        + "," + this.randomVal(trafficSituations) + "," + this.randomVal(damages)
+                        + "," + this.randomVal(speeds) + "," + this.randomVal(accelerations)
+                        + "," + this.randomVal(alcoholDetections);
+                    let curTime = new Date().valueOf();
+                    let loss = this.randomVal(loss2);//事故损失
+                    debugger
+                    AccidentRecordList.methods.addAccidentRecord(CarOwnerList.options.address, item.carOwnerAddr,
+                        item.carId, curTime, describe, item.companyAddr, item.schemeId, loss).send({
+                            from: owner, gas: 5000000
+                        }).then(() => {
+                            alert("已将事故信息上传！");
+                        }).catch((err) => {
+                            this.alert = err.message;
+                        });
+                },
+                async clickSix() {
+                    this.six = !this.six;
+                    if (this.six) {
+                        await this.getInsuranceAboutCars();
+                    }
+                },
+                async BuyButton2(item) {
+                    let startTime = String(new Date().valueOf());
+
+                    var Contracts = await loadContracts()
+                    var AccidentRecordList = Contracts.AccidentRecordList
+                    var BuyRecordList = Contracts.BuyRecordList
+                    var CarOwnerList = Contracts.CarOwnerList
+                    var CompanyList = Contracts.CompanyList
+                    var PolicerList = Contracts.PolicerList
+
+                    const accounts = await ethereum.request({ method: 'eth_requestAccounts' });
+                    const owner = accounts[0];
+                    const response = await fetch('./compiled/CarOwner.json');
+                    const carOwnerJson = await response.json();
+                    let ownerAddr = await CarOwnerList.methods.creatorOwnerMap(owner).call();
+                    const carOwnerContract = new web3.eth.Contract(carOwnerJson.abi, ownerAddr);
+
+                    BuyRecordList.methods.addBuyRecord(CarOwnerList.options.address, ownerAddr,
+                        this.targetCar.carId, item.companyAddr, item.schemeId, startTime, item.price).send({
+                            from: owner, gas: 5000000
+                        }).then(async () => {
+                            this.alert = "投保成功";
+                            //在修改车辆的buyRecordId后需要更新cars,insurancedCars,unInsurancedCars
+                            await this.getNowCars();
+                            this.getInsuranceAboutCars();
+                        }).catch((err) => {
+                            this.alert = err.message;
+                        })
+                },
+                async getSchemeInfo(companyAddr, schemeId) {//获得方案信息
+                    const accounts = await ethereum.request({ method: 'eth_requestAccounts' });
+                    const owner = accounts[0];
+
+                    const response = await fetch('./compiled/Company.json');
+                    const companyJson = await response.json();
+                    // 使用加载的 JSON 数据创建合约对象
+
+                    var Contracts = await loadContracts()
+                    var AccidentRecordList = Contracts.AccidentRecordList
+                    var BuyRecordList = Contracts.BuyRecordList
+                    var CarOwnerList = Contracts.CarOwnerList
+                    var CompanyList = Contracts.CompanyList
+                    var PolicerList = Contracts.PolicerList
+
+                    const companyContract = new web3.eth.Contract(companyJson.abi, companyAddr);
+
+                    let schemeInfo = await companyContract.methods.getSchemeInfoById(schemeId).call();
+                    //返回scheme.Id,scheme.schemeName,scheme.lastTime,scheme.price,scheme.payOut,scheme.onSale共6个值
+                    let scheme = {};
+                    scheme.schemeId = schemeInfo[0];
+                    scheme.schemeName = schemeInfo[1];
+                    scheme.lastTime = schemeInfo[2];
+                    scheme.price = schemeInfo[3];
+                    scheme.payOut = schemeInfo[4];
+                    scheme.onSale = schemeInfo[5];
+                    return scheme;
+                },
+                async getCompanySchemes(companyAddr) {
+                    try {
+
+                        const response = await fetch('./compiled/Company.json');
+                        const companyJson = await response.json();
+                        // 使用加载的 JSON 数据创建合约对象
+
+                        var Contracts = await loadContracts()
+                        var AccidentRecordList = Contracts.AccidentRecordList
+                        var BuyRecordList = Contracts.BuyRecordList
+                        var CarOwnerList = Contracts.CarOwnerList
+                        var CompanyList = Contracts.CompanyList
+                        var PolicerList = Contracts.PolicerList
+
+                        const companyContract = new web3.eth.Contract(companyJson.abi, companyAddr);
+                        debugger
+                        let companyName = await companyContract.methods.userName().call()
+                        console.log(companyName);
+                        let schemeIds = await companyContract.methods.getSchemeIds().call()
+                        console.log(schemeIds);
+                        for (var i = 0; i < schemeIds.length; i++) {
+                            let schemeInfo = await this.getSchemeInfo(companyAddr, schemeIds[i]);
+                            if (schemeInfo.onSale) {
+                                schemeInfo.companyName = companyName;
+                                schemeInfo.companyAddr = companyAddr;
+                                this.allInsurances.push(schemeInfo);
+                            }
+                        }
+                    } catch (e) {
+                        this.alert = e.message;
+                    }
+                },
+                async getAllSchemes() {
+                    var Contracts = await loadContracts()
+                    var AccidentRecordList = Contracts.AccidentRecordList
+                    var BuyRecordList = Contracts.BuyRecordList
+                    var CarOwnerList = Contracts.CarOwnerList
+                    var CompanyList = Contracts.CompanyList
+                    var PolicerList = Contracts.PolicerList
+                    try {
+                        debugger
+                        this.allInsurances = [];
+                        let companyAddrList = await CompanyList.methods.getCompanyList().call();
+                        console.log("companylist:", companyAddrList);
+                        for (var i = 0; i < companyAddrList.length; i++) {
+                            this.getCompanySchemes(companyAddrList[i]);
+                        }
+                    } catch (e) {
+                        this.alert = e.message;
+                    }
+
+                },
+                BuyButton1(item) {
+                    this.getAllSchemes();
+                    this.fourr = !this.fourr;
+                    this.targetCar = item;
+                },
+                async clickFour() {
+                    this.four = !this.four;
+                    if (this.four) {
+                        await this.getNowCars();
+                        await this.getInsuranceAboutCars();
+                    }
+                },
+                async getNowCars() {
+                    var Contracts = await loadContracts()
+                    var AccidentRecordList = Contracts.AccidentRecordList
+                    var BuyRecordList = Contracts.BuyRecordList
+                    var CarOwnerList = Contracts.CarOwnerList
+                    var CompanyList = Contracts.CompanyList
+                    var PolicerList = Contracts.PolicerList
+
+                    const accounts = await ethereum.request({ method: 'eth_requestAccounts' });
+                    const owner = accounts[0];
+
+                    const response = await fetch('./compiled/CarOwner.json');
+                    const carOwnerJson = await response.json();
+
+                    const carOwnerContract = new web3.eth.Contract(carOwnerJson.abi, carOwnerAddr);
+
+                    this.cars = [];
+                    let carIds = await carOwnerContract.methods.getCarIds().call({ from: owner });
+                    console.log(carIds)
+                    for (var i = 0; i < carIds.length; i++) {
+                        let carInfo = await this.getCarInfo(carOwnerAddr, carIds[i]);
+                        this.cars.push(carInfo);
+                        console.log("carinfo", carInfo)
+                    }
+                },
+                
+                async getCarInfo(carOwnerAddr, carId) {
+                    var Contracts = await loadContracts()
+                    var AccidentRecordList = Contracts.AccidentRecordList
+                    var BuyRecordList = Contracts.BuyRecordList
+                    var CarOwnerList = Contracts.CarOwnerList
+                    var CompanyList = Contracts.CompanyList
+                    var PolicerList = Contracts.PolicerList
+
+                    const accounts = await ethereum.request({ method: 'eth_requestAccounts' });
+                    const owner = accounts[0];
+
+                    const response = await fetch('./compiled/CarOwner.json');
+                    const carOwnerJson = await response.json();
+                    // 使用加载的 JSON 数据创建合约对象
+
+                    const carOwnerContract = new web3.eth.Contract(carOwnerJson.abi, carOwnerAddr);
+
+                    let carInfo = await carOwnerContract.methods.getCarInfoById(carId).call();
+                    let car = {};
+                    car.carId = carInfo[0];
+                    car.carNumber = carInfo[1];
+                    car.carName = carInfo[2];
+                    car.carAge = carInfo[3];
+                    car.buyRecordId = carInfo[4];
+                    return car;
+                },
+                async getBuyRecordInfo(buyRecordListContract, buyRecordId) {
+                    //返回结果顺序为buyRecord.Id,buyRecord.carOwner,buyRecord.carId,buyRecord.company
+                    //,buyRecord.schemeId,buyRecord.startTime,buyRecord.processState,buyRecord.Balance。共8个返回值
+                    let buyRecordInfo = await buyRecordListContract.methods.getBuyRecordById(buyRecordId).call();
+                    let buyRecord = {};
+                    buyRecord.Id = buyRecordInfo[0];
+                    buyRecord.carOwnerAddr = buyRecordInfo[1];
+                    buyRecord.carId = buyRecordInfo[2];
+                    buyRecord.companyAddr = buyRecordInfo[3];
+                    buyRecord.schemeId = buyRecordInfo[4];
+                    buyRecord.startTime = buyRecordInfo[5];
+                    buyRecord.processState = buyRecordInfo[6];
+                    buyRecord.balance = buyRecordInfo[7];
+                    return buyRecord;
+                },
+                async overTime(companyAddr, schemeId, startTime) {//根据订单记录判断是否逾期
+                    const response = await fetch('./compiled/Company.json');
+                    const companyJson = await response.json();
+
+                    let companyContract = new web3.eth.Contract(companyJson.abi, companyAddr);
+                    let schemeInfo = await companyContract.methods.getSchemeInfoById(schemeId).call();
+                    let lastTime = parseInt(schemeInfo[2]);//以年为单位
+                    console.log("订单持续时间：" + lastTime);
+                    let date = new Date(parseInt(startTime));
+                    date.setFullYear(date.getFullYear() + lastTime);//逾期年月日
+                    if (new Date().valueOf() > date.valueOf()) return [true, date];//逾期时间与当前时间比较，如果大于就逾期
+                    else return [false, date];
+                },
+                async getInsuranceAboutCars() {
+                    var Contracts = await loadContracts()
+                    var AccidentRecordList = Contracts.AccidentRecordList
+                    var BuyRecordList = Contracts.BuyRecordList
+                    var CarOwnerList = Contracts.CarOwnerList
+                    var CompanyList = Contracts.CompanyList
+                    var PolicerList = Contracts.PolicerList
+                    console.log("getInsuranceAboutCars");
+                    this.insurancedCars = [];
+                    this.unInsurancedCars = [];
+                    //挑出所有已经参保并且通过审批的车辆信息(包含订单信息)，和未参保或者参保被拒绝或者参保逾期的车辆信息
+                    for (var i = 0; i < this.cars.length; i++) {
+                        console.log("this.cars[i].buyRecordId", this.cars[i].buyRecordId)
+                        if (this.cars[i].buyRecordId != 0) {
+                            console.log("111")
+
+                            console.log("222")
+                            let buyRecord = await this.getBuyRecordInfo(BuyRecordList, this.cars[i].buyRecordId);
+                            if (buyRecord.processState == 1) {//已经获得同意并且没有逾期才可以提交事故
+                                let overtime = await this.overTime(buyRecord.companyAddr, buyRecord.schemeId, buyRecord.startTime);//根据buyRecordId就能判断该条保险记录有无逾期
+                                console.log("overtime", overtime)
+                                if (!overtime[0]) {//overtime[0]为true代表逾期,没有逾期的车辆进入insurancedCars数组
+                                    let insurancedCarInfo = this.cars[i];
+                                    insurancedCarInfo.carOwnerAddr = buyRecord.carOwnerAddr;
+                                    insurancedCarInfo.carId = buyRecord.carId;
+                                    insurancedCarInfo.companyAddr = buyRecord.companyAddr;
+                                    insurancedCarInfo.schemeId = buyRecord.schemeId;
+                                    this.insurancedCars.push(insurancedCarInfo);
+                                    console.log("insurancedCarInfo", insurancedCarInfo)
+                                } else {//已经逾期的订单对应车辆可以购买保险
+                                    this.unInsurancedCars.push(this.cars[i]);
+                                }
+                            } else if (buyRecord.processState == 2) {//已经被拒绝订单的车辆可以购买保险
+                                this.unInsurancedCars.push(this.cars[i]);
+                            }
+
+                        } else {//未投保的车辆可以购买保险
+                            this.unInsurancedCars.push(this.cars[i]);
+
+                        }
+                        console.log("unInsurancedCars", this.unInsurancedCars)
+                    }
+                },
+                async addCar() {
+                    if (!this.validateForm()) return;
+
+                    const newCar = {
+                        carNumber: this.car.carNumber,
+                        carName: this.car.carName,
+                        carAge: this.car.carAge
+                    };
+
+                    var Contracts = await loadContracts()
+                    var AccidentRecordList = Contracts.AccidentRecordList
+                    var BuyRecordList = Contracts.BuyRecordList
+                    var CarOwnerList = Contracts.CarOwnerList
+                    var CompanyList = Contracts.CompanyList
+                    var PolicerList = Contracts.PolicerList
+
+
+                    try {
+                        const accounts = await ethereum.request({ method: 'eth_requestAccounts' });
+                        const owner = accounts[0];
+
+                        const response = await fetch('./compiled/CarOwner.json');
+                        const carOwnerJson = await response.json();
+                        // 使用加载的 JSON 数据创建合约对象
+
+                        const carOwnerContract = new web3.eth.Contract(carOwnerJson.abi, carOwnerAddr);
+
+                        let ownerBalance = await carOwnerContract.methods.getBalance().call({ from: owner });
+                        console.log("ownerBalance", ownerBalance);
+
+                        await carOwnerContract.methods.addCar(newCar.carNumber, newCar.carName, newCar.carAge).send({
+                            from: owner, gas: 5000000
+                        });
+
+                        let ownerCarIds = await carOwnerContract.methods.getCarIds().call({ from: owner });
+                        console.log("ownerCarIds", ownerCarIds);
+
+                    } catch (err) {
+                        console.error(err.message);
+                        this.alert = err.message;
+                    }
+
+                },
+                validateForm() {
+                    if (!(this.car.carNumber && this.car.carName && this.car.carAge)) {
+                        alert("请把信息补充完整！");
+                    }
+
+                    return true;
+                },
+                async clickOne() {
+                    this.one = !this.one;
+                },
+            }
+        });
+    </script>
+
+</body>
+
+</html>

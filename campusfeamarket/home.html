@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="light">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registration Form</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>Contact - Brand</title>
+    <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:300,400,700&amp;display=swap">
+    <link rel="stylesheet" href="assets/fonts/ionicons.min.css">
+    <link rel="stylesheet" href="assets/css/pikaday.min.css">
+
+</head>
+
+<body>
+
+    <nav class="navbar navbar-expand-lg fixed-top portfolio-navbar gradient navbar-dark">
+        <div class="container"><a class="navbar-brand logo" href="#">Brand</a><button data-bs-toggle="collapse"
+                class="navbar-toggler" data-bs-target="#navbarNav"><span class="visually-hidden">Toggle
+                    navigation</span><span class="navbar-toggler-icon"></span></button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="home.html">首页</a></li>
+                    <li class="nav-item"><a class="nav-link" href="projects-grid-cards.html">Projects</a></li>
+                    <li class="nav-item"><a class="nav-link" href="cv.html">CV</a></li>
+                    <li class="nav-item"><a class="nav-link" href="hire-me.html">Hire me</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+
+    <div id="app" class="registry">
+        <div>
+            <!-- Alert Component -->
+            <div v-if="alert" class="alert alert-danger alert-dismissible fade show" role="alert">
+                {{ alert }}
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close" @click="alert = ''">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        </div>
+        <div class="container">
+
+
+            <main class="page contact-page">
+                <section class="portfolio-block contact">
+                    <div class="container">
+                        <div class="heading">
+                            <br><br>
+                            <h1>基于区块链的车辆保险系统</h1>
+                        </div>
+
+                        <h3>欢迎大家来到我们车险系统!</h3>
+                        <h4> 我们致力于为您提供便捷、高效、全面的车险服务体验。
+                            在这里，您可以轻松管理您的车险信息，享受一站式的保险服务。
+
+                            核心特点
+
+                            实时查询：随时查看您的车险保单详情，包括保障范围、保费支付记录等。
+                            智能推荐：根据您的车辆信息和驾驶习惯，为您推荐最适合的保险产品。
+                            快速理赔：发生意外时，一键报案，我们的专业团队将为您提供快速、专业的理赔服务。
+
+
+                            不再为繁琐的车险事务烦恼，加入我们，让您的车险生活更加简单、轻松。点击下方按钮，立即开始您的车险之旅吧！
+                       </h4>
+                       <br>
+                       <h4>
+                        请大家开始吧！
+                    </h4>
+                        <button id="registerButton" class="btn btn-primary">注册</button>
+                        <button id="loginButton" class="btn btn-primary">登录</button>
+
+                    </div>
+                </section>
+            </main>
+        </div> <!-- /container -->
+    </div>
+    <!-- Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <script>
+        document.getElementById("registerButton").addEventListener("click", function () {
+            window.location.href = "registry.html"; // Change "registration.html" to the URL of your registration page
+        });
+
+        document.getElementById("loginButton").addEventListener("click", function () {
+            window.location.href = "login.html"; // Change "registration.html" to the URL of your registration page
+        });
+    </script>
+
+
+</body>
+
+</html>

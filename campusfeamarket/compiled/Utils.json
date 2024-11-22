@@ -1,0 +1,10 @@
+{
+  "_format": "hh-sol-artifact-1",
+  "contractName": "Utils",
+  "sourceName": "contracts/Campus flea market.sol",
+  "abi": [],
+  "bytecode": "0x6080604052348015600f57600080fd5b50603f80601d6000396000f3fe6080604052600080fdfea26469706673582212205ec5a59fda1713e7733d7de96146183c8563aafa655f010953d6a7165ea9e8e664736f6c63430008180033",
+  "deployedBytecode": "0x6080604052600080fdfea26469706673582212205ec5a59fda1713e7733d7de96146183c8563aafa655f010953d6a7165ea9e8e664736f6c63430008180033",
+  "linkReferences": {},
+  "deployedLinkReferences": {}
+}

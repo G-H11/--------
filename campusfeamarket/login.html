@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="light">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registration Form</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>Contact - Brand</title>
+    <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:300,400,700&amp;display=swap">
+    <link rel="stylesheet" href="assets/fonts/ionicons.min.css">
+    <link rel="stylesheet" href="assets/css/pikaday.min.css">
+   
+</head>
+
+<body>
+
+    <nav class="navbar navbar-expand-lg fixed-top portfolio-navbar gradient navbar-dark">
+        <div class="container"><a class="navbar-brand logo" href="#">Brand</a><button data-bs-toggle="collapse"
+                class="navbar-toggler" data-bs-target="#navbarNav"><span class="visually-hidden">Toggle
+                    navigation</span><span class="navbar-toggler-icon"></span></button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="home.html">首页</a></li>
+                    <li class="nav-item"><a class="nav-link" href="projects-grid-cards.html">Projects</a></li>
+                    <li class="nav-item"><a class="nav-link" href="cv.html">CV</a></li>
+                    <li class="nav-item"><a class="nav-link" href="hire-me.html">Hire me</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+
+    <div id="app" class="registry">
+        <div>
+            <!-- Alert Component -->
+            <div v-if="alert" class="alert alert-danger alert-dismissible fade show" role="alert">
+                {{ alert }}
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close" @click="alert = ''">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        </div>
+        <div class="container">
+
+
+            <main class="page contact-page">
+                <section class="portfolio-block contact">
+                    <div class="container">
+                        <div class="heading">
+                            <br><br>
+                            <h1>在此登录</h1>
+                        </div>
+                        <form class="form-signin" data-bs-theme="light" @submit.prevent="userLogin">
+
+                            <input type="text" class="form-control" placeholder="您的用户名" required autofocus
+                                v-model="user.userName">
+
+                            <input type="password" class="form-control" placeholder="您的密码" required
+                                v-model="user.password">
+
+                            <div>
+                                <label>您的身份:</label>
+                                <select v-model="user.type" class="form-control">
+                                    <optgroup label="角色">
+                                        <option v-for="type in types" :value="type">{{ type }}</option>
+                                    </optgroup>
+                                </select>
+                            </div>
+
+                            <div class="form-group form-check">
+                                <input type="checkbox" class="form-check-input" id="remember-me">
+                                <label class="form-check-label" for="remember-me">Remember me</label>
+                            </div>
+
+                            <button class="btn btn-primary btn-block" type="submit">登录</button>
+
+
+                            <br>
+                            <a href='/registry.html'>没有账户？去注册</a>
+
+                        </form>
+                    </div>
+                </section>
+            </main>
+        </div> <!-- /container -->
+    </div>
+
+    <!-- Vue.js CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
+
+    <!-- 引入 contracts.js 文件 -->
+    <!-- <script type="module" src="contracts.js"></script> -->
+
+
+    <!-- 在 HTML 文件中引入 web3.js -->
+    <script src="./web3.min.js"></script>
+
+
+    <!-- 引入 contracts.js -->
+    <script src="./libs/contracts.js"></script>
+
+    <!-- Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <script>
+
+        let web3;
+        // 浏览器环境且已经安装了 Metamask
+        if (typeof window !== 'undefined' && typeof window.web3 !== 'undefined') {
+            web3 = new Web3(window.web3.currentProvider);
+            console.log("装了metamask");
+            // 服务器环境或者没有安装 Metamask
+        } else {
+            web3 = new Web3(new Web3.providers.HttpProvider('http://127.0.0.1:8888'));
+            console.log("没有装metamask");
+        }
+
+        new Vue({
+            el: '#app',
+            data: {
+                user: {
+                    userName: '',
+                    gender: true,
+                    companyNo: '',
+                    policerNo: '',
+                    phone: '',
+                    password: '',
+                    confirm: '',
+                    type: '顾客'
+                },
+                types: ['顾客', '店家'],
+                alert: '',
+                contracts: {} // 初始化 Contracts 对象
+            },
+            methods: {
+                async userLogin() {
+                    if (!this.validateForm()) return;
+
+                    const newUser = {
+                        name: this.user.userName,
+                        phone: this.user.phone,
+                        password: this.user.password
+                    };
+
+                    var Contracts = await loadContracts()
+                    var BuyRecordList = Contracts.BuyRecordList
+                    var CustomersOwnerList = Contracts.CustomersOwnerList
+                    var CompanyList = Contracts.CompanyList
+
+                    try {
+                        const accounts = await ethereum.request({ method: 'eth_requestAccounts' });
+                        const owner = accounts[0];
+
+                        if (this.user.type == '顾客') {
+                            pwdRight = await CustomersOwnerList.methods.verifyPwd(this.user.userName, this.user.password).call({ from: owner });
+                            console.log("验证账户：",pwdRight);
+                            if (pwdRight) {
+                                let ownerAddr = await CustomersOwnerList.methods.creatorOwnerMap(owner).call();
+                                // this.$router.push("/owner/" + ownerAddr);
+                                window.location.href = "/customersOwner.html?CustomersOwnerAddress=" + ownerAddr;
+                                // alert("测试登录成功")
+                            }
+                        } else if (this.user.type == '店家') {
+                            pwdRight = await CompanyList.methods.verifyPwd(this.user.userName, this.user.password).call({ from: owner });
+                            console.log(pwdRight);
+                            if (pwdRight) {
+                                let companyAddr = await CompanyList.methods.creatorCompanyMap(owner).call();
+                                // this.$router.push("/company/" + companyAddr);
+                                window.location.href = "/company.html?CompanyAddress=" + companyAddr;
+
+                            }
+                        }
+                    } catch (err) {
+                        console.log(err.message);
+                        this.alert = err.message;
+                        pwdRight = true;
+                    }
+                    if (!pwdRight) {
+                        this.alert1 = "密码错误！";
+                    }
+                },
+                validateForm() {
+
+
+                    if (!(this.user.userName && this.user.password && this.user.type)) {
+                        alert("请把信息补充完整！");
+                    }
+
+                    return true;
+                }
+            }
+        });
+    </script>
+
+</body>
+
+</html>

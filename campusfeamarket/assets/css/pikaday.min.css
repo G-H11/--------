@@ -1,0 +1,55 @@
+body {
+  background-image: url('./f7c42ac2-198e-40c3-9655-6405f5b14f2b.jpg');
+  /* 替换为您的图片路径 */
+  background-size: cover;
+  /* 使背景图片填充整个视口 */
+  background-position: center;
+  /* 使背景图片居中 */
+  background-repeat: no-repeat;
+  /* 防止图片重复 */
+  background-attachment: fixed;
+  /* 使背景图片固定在视口 */
+}
+
+.form-signin input[type="text"],
+.form-signin input[type="password"],
+.form-signin select {
+  border: 1px solid #ced4da;
+  border-radius: 40px;
+  padding: 7px;
+  margin-bottom: 10px;
+  width: 100%;
+}
+
+.form-signin input[type="radio"] {
+  margin-right: 10px;
+}
+
+.btn-block {
+  border-radius: 4px;
+  padding: 10px;
+  font-size: 18px;
+}
+
+.alert {
+  margin-bottom: 20px;
+  border-radius: 4px;
+}
+
+ /* Custom CSS */
+ .portfolio-block.contact h4 {
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+
+
+.portfolio-block.contact h3 {
+  font-size: 30px;
+  font-weight: 700;
+  margin-bottom: 20px;
+}
+
+
+/* .form-signin{
+  background-color: rgba(255, 255, 255, 0.3);
+} */

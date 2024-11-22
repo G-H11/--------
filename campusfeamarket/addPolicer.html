@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="light">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registration Form</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>Contact - Brand</title>
+    <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:300,400,700&amp;display=swap">
+    <link rel="stylesheet" href="assets/fonts/ionicons.min.css">
+    <link rel="stylesheet" href="assets/css/pikaday.min.css">
+
+    <style>
+        .section {
+            display: none;
+        }
+
+        .active {
+            display: block;
+        }
+
+        nav a {
+            margin: 0 15px;
+            cursor: pointer;
+        }
+
+    </style>
+</head>
+
+<body>
+
+    <nav class="navbar navbar-expand-lg fixed-top portfolio-navbar gradient navbar-dark">
+        <div class="container"><a class="navbar-brand logo" href="#">Brand</a><button data-bs-toggle="collapse"
+                class="navbar-toggler" data-bs-target="#navbarNav"><span class="visually-hidden">Toggle
+                    navigation</span><span class="navbar-toggler-icon"></span></button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="home.html">首页</a></li>
+                    <li class="nav-item"><a id="nav-add-car" class="nav-link">添加车辆</a></li>
+                    <li class="nav-item"><a id="nav-view-cars" class="nav-link">查询所有车辆信息</a></li>
+                    <li class="nav-item"><a id="nav-buy-scheme" class="nav-link">购买保险</a></li>
+                    <li class="nav-item"><a id="nav-sumit-accident" class="nav-link">事故提交</a></li>
+                    <li class="nav-item"><a id="nav-check-blance" class="nav-link">余额查询</a></li>
+                    <li class="nav-item"><a id="nav-personal-info" class="nav-link">个人信息</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div id="add-car" class="section">
+        <div class="container">
+            <main class="page contact-page">
+                <section class="portfolio-block contact">
+                    <div class="container">
+                        <div class="heading">
+                            <br><br>
+                            <h1>添加保险</h1>
+                        </div>
+                        <form class="form-signin" data-bs-theme="light" onsubmit="addCar(event)">
+                            <h4>请在此添加车辆信息</h4>
+                            <input type="text" class="form-control" placeholder="车辆牌照" required
+                                v-model="carInfo.carNumber">
+
+                            <input type="text" class="form-control" placeholder="车辆名称" required
+                                v-model="carInfo.carName">
+
+                            <input type="text" class="form-control" placeholder="车辆年数" required
+                                v-model="carInfo.carAge">
+                            <br>
+                            <button class="btn btn-primary btn-block" type="submit">添加车辆</button>
+                        </form>
+                        <!-- <form class="form-signin1" data-bs-theme="light" @submit.prevent="buyScheme">
+
+                            <button class="btn btn-primary btn-block" type="submit1">已有车辆？购买保险</button>
+
+                        </form> -->
+                    </div>
+                </section>
+            </main>
+        </div> <!-- /container -->
+    </div>
+
+    <div id="view-cars" class="section">
+
+        <div class="container">
+            <main class="page contact-page">
+                <section class="portfolio-block contact">
+                    <div class="container">
+                        <main class="page contact-page">
+                            <div class="heading">
+                                <br><br>
+                                <h1>车辆列表</h1>
+                            </div>
+                            <button class="btn btn-primary btn-block" onclick="CarInfo()">获取车辆列表</button>
+                            <!-- 显示保险信息的区域 -->
+                            <div id="car-info" class="mt-4"></div>
+                        </main>
+                    </div> <!-- /container -->
+                </section>
+            </main>
+        </div> <!-- /container -->
+
+    </div>
+
+    <div id="buy-scheme" class="section">
+
+        <div class="container">
+            <main class="page contact-page">
+                <section class="portfolio-block contact">
+                    <div class="container">
+                        <main class="page contact-page">
+                            <div class="heading">
+                                <br><br>
+                                <h2 class="form-signin-heading">您有这些车辆还未投保哦</h2><br>
+                            </div>
+                            <!-- <form class="form-signin" data-bs-theme="light" onsubmit="CarsInfo()">
+                            
+                                
+
+                            </form> -->
+                            <button class="btn btn-primary btn-block" onclick="CarsInfo()">获取车辆信息</button>
+                            <!-- 显示保险信息的区域 -->
+
+                            <div id="cars-info" class="mt-4"></div>
+
+                        </main>
+                    </div> <!-- /container -->
+                </section>
+            </main>
+        </div> <!-- /container -->
+
+    </div>
+
+    <div id="sumit-accident" class="section">
+
+        <div class="container">
+            <main class="page contact-page">
+                <section class="portfolio-block contact">
+                    <div class="container">
+                        <main class="page contact-page">
+                            <div class="heading">
+                                <br><br>
+                                <h1>车辆列表</h1>
+                            </div>
+                            <button class="btn btn-primary btn-block" onclick="CarInfo()">获取车辆列表</button>
+                            <!-- 显示保险信息的区域 -->
+                            <div id="car-info" class="mt-4"></div>
+                        </main>
+                    </div> <!-- /container -->
+                </section>
+            </main>
+        </div> <!-- /container -->
+
+    </div>
+
+    <script>
+        document.getElementById('nav-add-car').addEventListener('click', function () {
+            showSection('add-car');
+        });
+        document.getElementById('nav-view-cars').addEventListener('click', function () {
+            showSection('view-cars');
+        });
+        document.getElementById('nav-buy-scheme').addEventListener('click', function () {
+            showSection('buy-scheme');
+        });
+        document.getElementById('nav-sumit-accident').addEventListener('click', function () {
+            showSection('sumit-accident');
+        });
+        document.getElementById('nav-check-blance').addEventListener('click', function () {
+            showSection('check-blance');
+        });
+        document.getElementById('nav-personal-info').addEventListener('click', function () {
+            showSection('personal-info');
+        });
+
+        function showSection(sectionId) {
+            const sections = document.querySelectorAll('.section');
+            sections.forEach(section => {
+                section.classList.remove('active');
+            });
+            document.getElementById(sectionId).classList.add('active');
+        }
+
+        // 默认展示第一个板块
+        showSection('add-car');
+    </script>
+
+    <!-- 在 HTML 文件中引入 web3.js -->
+    <script src="./web3.min.js"></script>
+    <!-- 引入 contracts.js -->
+    <script src="./libs/contracts.js"></script>
+    <!-- Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    </script>
+
+    <script>
+
+        let web3;
+        // 浏览器环境且已经安装了 Metamask
+        if (typeof window !== 'undefined' && typeof window.web3 !== 'undefined') {
+            web3 = new Web3(window.web3.currentProvider);
+            console.log("装了metamask");
+            // 服务器环境或者没有安装 Metamask
+        } else {
+            web3 = new Web3(new Web3.providers.HttpProvider('http://127.0.0.1:8888'));
+            console.log("没有装metamask");
+        }
+
+
+        // 获取 URL 参数的函数
+        function getUrlParameter(name) {
+            name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
+            var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
+            var results = regex.exec(location.search);
+            return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
+        }
+
+        // 获取参数
+        var policerOwnerAddr = getUrlParameter('PoliceAddress');
+
+        // 在页面中显示参数值，你可以根据需要进行处理
+        document.write('<h3>交警合约地址为：' + policerOwnerAddr + '</h3>');
+
+        async function first() {
+            const accounts = await ethereum.request({ method: 'eth_requestAccounts' });
+            const owner = accounts[0];
+            console.log("owner", owner);
+
+            const response = await fetch('./compiled/Policer.json');
+            const policerOwnerJson = await response.json();
+            // 使用加载的 JSON 数据创建合约对象
+
+            const policerContract = new web3.eth.Contract(policerOwnerJson.abi, policerOwnerAddr);
+
+            return { policerContract, owner };
+        }
+
+        async function two() {
+            if (!validateForm()) return;
+
+            // const newCar = {
+            //     carNumber: document.querySelector('[placeholder="车牌牌照"]').value,
+            //     carName: document.querySelector('[placeholder="车辆名称"]').value,
+            //     carAge: document.querySelector('[placeholder="车辆年数"]').value,
+            // };
+            const newCar = {
+                carNumber: document.querySelector('[placeholder="车辆牌照"]').value,
+                carName: document.querySelector('[placeholder="车辆名称"]').value,
+                carAge: document.querySelector('[placeholder="车辆年数"]').value,
+            };
+
+            var Contracts = await loadContracts();
+            var AccidentRecordList = Contracts.AccidentRecordList;
+            var BuyRecordList = Contracts.BuyRecordList;
+            var CarOwnerList = Contracts.CarOwnerList;
+            var CompanyList = Contracts.CompanyList;
+            var PolicerList = Contracts.PolicerList;
+
+            return { newCar };
+        }
+
+        
+        
+        function validateForm() {
+            // const carNumber = document.querySelector('[placeholder="车牌号"]').value;
+            // const carName = document.querySelector('[placeholder="车辆名称"]').value;
+            // const carAge = document.querySelector('[placeholder="车龄"]').value;
+            const carNumber = document.querySelector('[placeholder="车辆牌照"]').value;
+            const carName = document.querySelector('[placeholder="车辆名称"]').value;
+            const carAge = document.querySelector('[placeholder="车辆年数"]').value;
+            if (!(carNumber && carName && carAge)) {
+                alert("请把信息补充完整！");
+                return false;
+            }
+            return true;
+        }
+
+    </script>
+
+</body>
+
+</html>
